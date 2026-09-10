@@ -169,4 +169,24 @@ Collections have multiple features, so instead of importing the entire collectio
 
 If we use `most_common(3)`, it returns the top three, and so on.
 
+---
+
+## methodes
+
+### `group()`
+
+`group()` gives us the part of the string that matched what we were searching for, instead of returning the whole `Match` object.
+
+```python
+match = re.search(r"\d+\.\d+\.\d+\.\d+", line)
+if match:
+    print(match.group())  # print the matched IP address
+```
+
+`match.group() if match else None` means:
+
+```python
+VALUE_IF_TRUE if CONDITION else VALUE_IF_FALSE
+```
+
 
