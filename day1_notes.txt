@@ -68,6 +68,12 @@ with open("demo_service.log") as f:  # open the log file for reading (text mode)
 
 `strip()` tells the compiler to strip the line and put it on the side; it strips the extra whitespace, including the trailing newline.
 
+### Useful String Helpers
+
+- **`strip()`** → clean spaces/newlines from the edges
+- **`in`** → check if something exists inside a string
+- **`split()`** → break a string into separate pieces/words
+
 ---
 
 ## Taking Multiple Pieces of Information from One Line
