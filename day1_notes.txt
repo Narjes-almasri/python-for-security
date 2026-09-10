@@ -1,0 +1,192 @@
+# Day 1 Python Notes
+
+## Libraries, Patterns, and Files
+
+**Badans** (it is a library) is a framework that helps to manipulate.
+
+### What Is a Pattern?
+
+A pattern is a sequence of like items.
+
+To detect patterns, we have to make a pattern match to detect it. The easiest way is via code.
+
+- Read a file (Python file) line by line.
+- Parse a file (split it word by word).
+- Use the regular expressions library. Its search feature can be used to find a pattern.
+
+**Sympathetic data** (synthetic data) is artificial data that we make.
+
+---
+
+## Multi-Line Strings in Python
+
+A doc stream in Python is when we have multiple lines and we do not want to put them inside separate strings. We want to put them in the same block:
+
+```python
+variable_name = """Here we put the paragraph"""
+```
+
+### Example of a Doc Stream
+
+```python
+demo_lines = """2026-02-10 08:01:00 INFO  Service started
+2026-02-10 08:02:15 WARNING Connection retry to 172.16.0.4
+2026-02-10 08:03:40 INFO  Health check OK
+2026-02-10 08:04:59 WARNING Connection retry(WARNING Connection retry to this is the status of ip address) to 172.16.0.9
+"""  # multi-line string
+```
+
+```python
+with open("demo_service.log", "w") as f:
+    # Open (create/overwrite) the demo log file for writing.
+    # We use `with` because it opens the file, lets us add whatever we need,
+    # and automatically closes it. Without `with`, the file would stay open
+    # and could cause leaks. We would have to use close(), which is an extra line.
+    f.write(demo_lines)
+```
+
+`"w"` means that the file will be writable so we can write to it.
+
+**Alias** means another name for something.
+
+---
+
+## Detecting Unauthorized Logs
+
+This block of code will help us detect unauthorized logs.
+
+### Technique 1: Read a File Line by Line and Filter by Keyword
+
+```python
+with open("demo_service.log") as f:  # open the log file for reading (text mode)
+    for line in f:  # iterate over the file one line at a time
+        # `f` is our file, and `line` tells the compiler to walk through `f` line by line.
+        if "WARNING" in line:  # keep only lines that mention WARNING
+            # If you detect or face the word WARNING, take that line and put it on the side.
+            print(line.strip())  # print the line with the trailing newline removed
+```
+
+`strip()` tells the compiler to strip the line and put it on the side; it strips the extra whitespace, including the trailing newline.
+
+### Useful String Helpers
+
+- **`strip()`** → clean spaces/newlines from the edges
+- **`in`** → check if something exists inside a string
+- **`split()`** → break a string into separate pieces/words
+
+---
+
+## Taking Multiple Pieces of Information from One Line
+
+We can take multiple pieces of information from one line.
+
+### Example
+
+```python
+# Technique 2: parse a line into fields with .split() and .strip()
+line = "2026-02-10 08:02:15 WARNING Connection retry to 172.16.0.4"  # a single sample log line
+date, time_, level, *message_parts = line.split()  # split on whitespace and unpack into named fields
+message = " ".join(message_parts)  # rejoin the remaining words into the message text
+
+print("date:   ", date)  # print the extracted date field
+print("time:   ", time_)  # print the extracted time field
+print("level:  ", level)  # print the extracted log level field
+print("message:", message)  # print the reassembled message field
+```
+
+The underscore in `time_` is used because `time` is a reserved word.
+
+We have three variables on the same line: `date`, `time_`, `level`, and `*message_parts`.
+
+---
+
+## Regular Expressions and IP Addresses
+
+```python
+import re  # regular expression module for pattern matching; `re` stands for regular expression
+
+# Drill C: find an IP address in a line with re.search()
+line = "2026-01-04 09:12:45 ERROR Connection refused from 10.0.0.5"  # a sample log line containing an IP
+match = re.search(r"\d+\.\d+\.\d+\.\d+", line)  # search for the first IPv4-shaped pattern in the line
+```
+
+### In Regular Expressions
+
+`\d+\.\d+\.\d+\.\d+` means:
+
+- `\d` means digits.
+- `\.` means a literal dot (`.`).
+- It searches for the pattern `num.num.num.num`, which is the format for an IPv4 address.
+
+```python
+print("IP found:", match.group() if match else None)  # print the matched IP text, or None if no match
+```
+
+`match.group()` means that we want to group all the IPs that are found together.
+
+`if match else None` means that if we do not find the match, return `None`.
+
+---
+
+## Putting Everything Together in One Function
+
+`def` means define.
+
+### Syntax
+
+```python
+def funname(params):
+    content_of_fun
+```
+
+```python
+def find_lines(filename, keyword):  # define a reusable function taking a filename and a keyword
+    """Return a list of lines in `filename` containing `keyword`."""
+    matches = []  # empty list; it is the accumulator list for lines that match
+    with open(filename) as f:  # open the target file for reading
+        for file_line in f:  # iterate line by line
+            if keyword in file_line:  # keep only lines containing the keyword
+                matches.append(file_line.strip())  # store the line without its trailing newline
+    return matches  # hand back the list of matching lines
+
+find_lines("drill_sample.log", "ERROR")  # call the function and display the returned list
+```
+
+---
+
+## Counter and `most_common()`
+
+```python
+import re  # regular expression module for pattern matching
+from collections import Counter  # Counter tallies hashable items and supports counting
+```
+
+Collections have multiple features, so instead of importing the entire collection with all its features, we tell Python to import only `Counter` from `collections`.
+
+### `most_common(num)`
+
+`most_common(2)` returns the two most common items (the top two).
+
+If we use `most_common(3)`, it returns the top three, and so on.
+
+---
+
+## methodes
+
+### `group()`
+
+`group()` gives us the part of the string that matched what we were searching for, instead of returning the whole `Match` object.
+
+```python
+match = re.search(r"\d+\.\d+\.\d+\.\d+", line)
+if match:
+    print(match.group())  # print the matched IP address
+```
+
+`match.group() if match else None` means:
+
+```python
+VALUE_IF_TRUE if CONDITION else VALUE_IF_FALSE
+```
+
+
