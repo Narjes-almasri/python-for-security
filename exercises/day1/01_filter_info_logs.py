@@ -6,7 +6,7 @@ data = """ 2026-02-10 08:01:00 INFO  Service started
  """
 
     # f.write(data)
-with open("data.log", "r") as f:
+with open("data/demo_service.log", "r") as f:
     # We open the file "data.log" in read mode ("r")
     # and give the opened file the name/alias "f".
 

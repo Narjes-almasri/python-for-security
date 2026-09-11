@@ -10,7 +10,7 @@
 
 # Floor: total failed-login count using simple count sum()
 
-with open("sample_auth.log") as f:
+with open("data/sample_auth.log") as f:
    
     count = sum(1 for line in f if "Failed password" in line)
             

@@ -13,4 +13,4 @@ def file_name_fun(filename,keyword):
            
          
 
-print(file_name_fun("data.log","INFO") )
+print(file_name_fun("data/demo_service.log","INFO") )

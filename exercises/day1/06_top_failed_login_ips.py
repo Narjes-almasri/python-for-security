@@ -3,7 +3,7 @@ import re
 from collections import Counter
 
 counter = Counter()
-with open("sample_auth.log") as f:
+with open("data/sample_auth.log") as f:
     for line in f:
         if "Failed password" in line:
             ip = re.search(r"\d+\.\d+\.\d+\.\d+",line)
